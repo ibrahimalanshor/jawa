@@ -1,5 +1,25 @@
 import java.util.Scanner;
 
+class InvalidMenuNumberException extends Exception {
+    private static final String message = "Invalid Menu Number";
+
+    public InvalidMenuNumberException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public InvalidMenuNumberException(String message) {
+        super(message);
+    }
+
+    public InvalidMenuNumberException(Throwable cause) {
+        super(InvalidMenuNumberException.message, cause);
+    }
+
+    public InvalidMenuNumberException() {
+        super(InvalidMenuNumberException.message);
+    }
+}
+
 class Main {
 
     static String menus[] = {"List all tasks", "Add tasks", "Exit"};
@@ -10,15 +30,20 @@ class Main {
         }
     }
 
-    public static int selectMenu() {
+    public static int selectMenu() throws InvalidMenuNumberException {
         Scanner scanner = new Scanner(System.in);
+        int selectedMenuNumber;
 
         System.out.print("Select menu (by number) = ");
         
-        int selectedMenuNumber = Integer.parseInt(scanner.nextLine());
+        try {
+            selectedMenuNumber = Integer.parseInt(scanner.nextLine());
+        } catch (NumberFormatException e) {
+            throw new InvalidMenuNumberException(e);
+        } 
 
         if (selectedMenuNumber < 1 || selectedMenuNumber > menus.length) {
-            throw new NumberFormatException("Invalud menu number (%d)%n");
+            throw new InvalidMenuNumberException();
         }
 
         return selectedMenuNumber;
@@ -32,7 +57,7 @@ class Main {
         
             try {
                 selectedMenuNumber = selectMenu();
-            } catch (NumberFormatException e) {
+            } catch (InvalidMenuNumberException e) {
                 System.out.println(e.getMessage());
 
                 break;
