@@ -1,11 +1,22 @@
-public class Task {
-    private static Task[] tasks = {};
+import java.util.ArrayList;
 
-    public static Task[] getAll() {
+public class Task {
+    public String name;
+    private static ArrayList<Task> tasks = new ArrayList<>();
+
+    public Task(String name) {
+        this.name = name;
+    }
+
+    public static ArrayList<Task> getAll() {
         return tasks;
     }
 
     public static int count() {
-        return tasks.length;
+        return tasks.size();
+    }
+
+    public void save() {
+        tasks.add(this);
     }
 }

@@ -21,13 +21,21 @@ class Main {
                 }
 
                 for (Task task : Task.getAll()) {
-                    System.out.println(task);
+                    System.out.println(task.name);
                 }
 
                 break;
 
             case 2:
-                System.out.println("New Task");
+                Scanner scanner = new Scanner(System.in);
+
+                System.out.print("Task name = ");
+
+                String name = scanner.nextLine();
+
+                Task task = new Task(name);
+
+                task.save();
                 break;
         
             default:
