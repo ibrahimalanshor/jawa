@@ -14,7 +14,16 @@ class Main {
     public static void switchMenu() {
         switch (selectedMenuNumber) {
             case 1:
-                System.out.println("Displaying All Task");
+                if (Task.count() < 1) {
+                    System.out.println("No Task Available");
+
+                    break;
+                }
+
+                for (Task task : Task.getAll()) {
+                    System.out.println(task);
+                }
+
                 break;
 
             case 2:
