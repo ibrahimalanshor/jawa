@@ -14,15 +14,21 @@ class Main {
     public static void switchMenu() {
         switch (selectedMenuNumber) {
             case 1:
-                if (Task.count() < 1) {
-                    System.out.println("No Task Available");
+                Table table = new Table();
 
-                    break;
-                }
+                table.setHeaders("Id", "Name");
+
+                // if (Task.count() < 1) {
+                //     System.out.println("No Task Available");
+
+                //     break;
+                // }
 
                 for (Task task : Task.getAll()) {
-                    System.out.println(task.id + ". " + task.name);
+                    table.addRow(Integer.toString(task.id), task.name);
                 }
+
+                table.print();
 
                 break;
 
