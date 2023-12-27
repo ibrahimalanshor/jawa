@@ -3,6 +3,7 @@ import java.util.Scanner;
 class Main {
 
     static String menus[] = {"List all tasks", "Add tasks", "Exit"};
+    static int selectedMenuNumber;
 
     public static void displayMenus() {
         for (int i = 0; i < menus.length; i++) {
@@ -10,9 +11,23 @@ class Main {
         }
     }
 
-    public static int selectMenu() throws InvalidMenuNumberException {
+    public static void switchMenu() {
+        switch (selectedMenuNumber) {
+            case 1:
+                System.out.println("Displaying All Task");
+                break;
+
+            case 2:
+                System.out.println("New Task");
+                break;
+        
+            default:
+                break;
+        }
+    }
+
+    public static void selectMenu() throws InvalidMenuNumberException {
         Scanner scanner = new Scanner(System.in);
-        int selectedMenuNumber;
 
         System.out.print("Select menu (by number) = ");
         
@@ -26,17 +41,15 @@ class Main {
             throw new InvalidMenuNumberException();
         }
 
-        return selectedMenuNumber;
+        switchMenu();
     }
 
     public static void main(String args[]) {
-        int selectedMenuNumber;        
-        
         do {
             displayMenus();
         
             try {
-                selectedMenuNumber = selectMenu();
+                selectMenu();
             } catch (InvalidMenuNumberException e) {
                 System.out.println(e.getMessage());
 
