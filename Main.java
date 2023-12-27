@@ -21,7 +21,7 @@ class Main {
                 }
 
                 for (Task task : Task.getAll()) {
-                    System.out.println(task.name);
+                    System.out.println(task.id + ". " + task.name);
                 }
 
                 break;
