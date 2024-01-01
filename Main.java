@@ -18,12 +18,6 @@ class Main {
 
                 table.setHeaders("Id", "Name");
 
-                // if (Task.count() < 1) {
-                //     System.out.println("No Task Available");
-
-                //     break;
-                // }
-
                 for (Task task : Task.getAll()) {
                     table.addRow(Integer.toString(task.id), task.name);
                 }
