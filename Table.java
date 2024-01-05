@@ -1,5 +1,5 @@
 import java.util.ArrayList;
-import java.util.stream.Stream;
+import java.util.Arrays;
 
 public class Table {
     private String[] columns;
@@ -8,7 +8,7 @@ public class Table {
 
     public void setHeaders(String ...headers) {
         this.columns = headers;
-        this.columnsWidths = Stream.of(headers).mapToInt(header -> header.length()).toArray();
+        this.columnsWidths = Arrays.stream(headers).mapToInt(header -> header.length()).toArray();
     }
 
     public void addRow(String ...rows) {
@@ -19,7 +19,7 @@ public class Table {
         }
     }
 
-    public void printLine() {
+    private void printLine() {
         System.out.print('+');
 
         for (int i = 0; i < this.columnsWidths.length; i++) {
@@ -42,7 +42,18 @@ public class Table {
         System.out.println();
     }
 
-    public void printHeader() {
+    private void printCell(String content, int columnWidth) {
+        StringBuilder whiteSpace = new StringBuilder();
+        int remainingColumnWidth = columnWidth - content.length();
+        
+        if (remainingColumnWidth > 0) {
+            whiteSpace.append(" ".repeat(remainingColumnWidth));
+        }
+
+        System.out.print(' ' + content + whiteSpace + ' ');
+    }
+
+    private void printHeader() {
         this.printLine();
 
         System.out.print('|');
@@ -51,7 +62,7 @@ public class Table {
             String content = this.columns[i];
             int columnWidth = this.columnsWidths[i];
 
-            this.printCol(content, columnWidth);
+            this.printCell(content, columnWidth);
 
             if (i < this.columns.length - 1) {
                 System.out.print('|');
@@ -64,34 +75,40 @@ public class Table {
         this.printLine();
     }
 
-    public void printCol(String content, int columnWidth) {
-        StringBuilder whiteSpace = new StringBuilder();
-        int remainingColumnWidth = columnWidth - content.length();
-        
-        if (remainingColumnWidth > 0) {
-            whiteSpace.append(" ".repeat(remainingColumnWidth));
-        }
+    private void printEmptyCell() {
+        System.out.print('|');
+            
+        int totalColumnWidth = Arrays.stream(this.columnsWidths).sum();
+        int totalWhiteSpace = this.columns.length * 2 - 2;
+        int totalSeparator = this.columns.length - 1;
 
-        System.out.print(' ' + content + whiteSpace + ' ');
+        this.printCell("Empty", totalColumnWidth + totalWhiteSpace + totalSeparator);
+
+        System.out.print('|');
+        System.out.println();
     }
 
-    public void printRows() {
-        for (String[] row : this.rows) {
-            System.out.print('|');
+    private void printRows() {
+        if (this.rows.size() < 1) {
+            this.printEmptyCell();
+        } else {
+            for (String[] row : this.rows) {
+                System.out.print('|');
 
-            for (int i = 0; i < row.length; i++) {
-                String content = row[i];
-                int columnWidth = this.columnsWidths[i];
+                for (int i = 0; i < row.length; i++) {
+                    String content = row[i];
+                    int columnWidth = this.columnsWidths[i];
 
-                this.printCol(content, columnWidth);
+                    this.printCell(content, columnWidth);
 
-                if (i < row.length - 1) {
-                    System.out.print('|');
+                    if (i < row.length - 1) {
+                        System.out.print('|');
+                    }
                 }
-            }
 
-            System.out.print('|');
-            System.out.println();
+                System.out.print('|');
+                System.out.println();
+            }
         }
 
         this.printLine();
